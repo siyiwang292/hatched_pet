@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>帽兜</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="app" data-state="idle">
+      <nav id="app-launcher" aria-label="帽兜 controls">
+        <button data-app="wechat" type="button">WeChat</button>
+        <button data-app="spotify" type="button">Spotify</button>
+        <button data-app="cursor" type="button">Cursor</button>
+        <hr />
+        <button id="roam-button" type="button">Pause</button>
+        <button id="hide-button" type="button">Hide</button>
+      </nav>
+
+      <div id="speech-bubble" role="status" aria-live="polite">我是帽兜</div>
+
+      <div id="pet-stage">
+        <div id="sleep-symbols" aria-hidden="true"><i>z</i><i>Z</i><i>z</i></div>
+
+        <div id="bunny-wrapper">
+          <canvas
+            id="bunny-image"
+            width="720"
+            height="680"
+            role="img"
+            aria-label="帽兜"
+          ></canvas>
+        </div>
+
+        <svg
+          id="pet-art"
+          viewBox="0 0 360 340"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="fur" x1="0" y1="0" x2="0.8" y2="1">
+              <stop offset="0" stop-color="#ffffff" />
+              <stop offset="0.62" stop-color="#eafaff" />
+              <stop offset="1" stop-color="#b9e8f5" />
+            </linearGradient>
+            <linearGradient id="ice" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#dffbff" />
+              <stop offset="0.5" stop-color="#75d9f1" />
+              <stop offset="1" stop-color="#798eea" />
+            </linearGradient>
+            <linearGradient id="inner-ear" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#e5fbff" />
+              <stop offset="0.58" stop-color="#9ce7f4" />
+              <stop offset="1" stop-color="#8eaff0" />
+            </linearGradient>
+            <radialGradient id="eye" cx="35%" cy="24%" r="75%">
+              <stop offset="0" stop-color="#e7ffff" />
+              <stop offset="0.2" stop-color="#87f1ff" />
+              <stop offset="0.72" stop-color="#4989de" />
+              <stop offset="1" stop-color="#4256a3" />
+            </radialGradient>
+            <filter id="soft-shadow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="7" />
+            </filter>
+            <filter id="body-shadow" x="-30%" y="-30%" width="160%" height="170%">
+              <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#4f8ca3" flood-opacity=".28" />
+            </filter>
+          </defs>
+
+          <ellipse
+            id="ground-shadow"
+            cx="180"
+            cy="313"
+            rx="97"
+            ry="16"
+            fill="#31577a"
+            opacity=".25"
+            filter="url(#soft-shadow)"
+          />
+
+          <g id="bunny">
+            <g id="tail">
+              <circle cx="267" cy="232" r="28" fill="#caeff8" stroke="#82ccdf" stroke-width="3" />
+              <path
+                d="M250 230l10-8-1-13 12 6 10-7 2 13 12 5-10 9 1 13-13-5-11 7-1-13z"
+                fill="url(#ice)"
+                opacity=".82"
+              />
+            </g>
+
+            <g id="left-ear" class="ear">
+              <path
+                d="M119 100C83 83 49 98 45 134c-5 48 7 112 42 132 15 9 29-3 26-20-8-42-3-75 24-105z"
+                fill="url(#fur)"
+                stroke="#73aebe"
+                stroke-width="3"
+              />
+              <path
+                d="M105 116c-26-8-42 5-41 29 2 41 11 79 30 95 3-42 10-76 29-100z"
+                fill="url(#inner-ear)"
+                opacity=".78"
+              />
+              <path d="M77 203l17-13 13 10-13 29z" fill="#fff" opacity=".5" />
+              <circle cx="82" cy="174" r="4" fill="#fff" opacity=".85" />
+              <circle cx="95" cy="157" r="2.5" fill="#fff" opacity=".8" />
+            </g>
+
+            <g id="right-ear" class="ear">
+              <path
+                d="M241 100c36-17 70-2 74 34 5 48-7 112-42 132-15 9-29-3-26-20 8-42 3-75-24-105z"
+                fill="url(#fur)"
+                stroke="#73aebe"
+                stroke-width="3"
+              />
+              <path
+                d="M255 116c26-8 42 5 41 29-2 41-11 79-30 95-3-42-10-76-29-100z"
+                fill="url(#inner-ear)"
+                opacity=".78"
+              />
+              <path d="M283 203l-17-13-13 10 13 29z" fill="#fff" opacity=".5" />
+              <circle cx="278" cy="174" r="4" fill="#fff" opacity=".85" />
+              <circle cx="265" cy="157" r="2.5" fill="#fff" opacity=".8" />
+            </g>
+
+            <g id="body" filter="url(#body-shadow)">
+              <path
+                d="M128 202c9-28 95-28 104 0 12 35 18 85-3 100-22 16-76 16-98-1-20-16-14-65-3-99z"
+                fill="url(#fur)"
+                stroke="#73aebe"
+                stroke-width="3"
+              />
+              <g id="left-arm">
+                <path
+                  d="M132 216c-14-2-32 12-37 27-4 12 7 20 17 13l28-22z"
+                  fill="url(#fur)"
+                  stroke="#73aebe"
+                  stroke-width="3"
+                />
+              </g>
+              <g id="right-arm">
+                <path
+                  d="M228 216c14-2 32 12 37 27 4 12-7 20-17 13l-28-22z"
+                  fill="url(#fur)"
+                  stroke="#73aebe"
+                  stroke-width="3"
+                />
+              </g>
+              <g id="left-foot">
+                <path
+                  d="M146 288c-6 15-3 35 9 39 12 4 21-15 22-32z"
+                  fill="url(#fur)"
+                  stroke="#73aebe"
+                  stroke-width="3"
+                />
+              </g>
+              <g id="right-foot">
+                <path
+                  d="M214 288c6 15 3 35-9 39-12 4-21-15-22-32z"
+                  fill="url(#fur)"
+                  stroke="#73aebe"
+                  stroke-width="3"
+                />
+              </g>
+              <g id="chest-snowflake" fill="none" stroke="#71cfe8" stroke-linecap="round">
+                <path d="M180 245v28M168 252l24 14M192 252l-24 14" stroke-width="3" />
+                <path d="M176 249l4 4 4-4M176 269l4-4 4 4" stroke-width="2" />
+              </g>
+            </g>
+
+            <g id="head" filter="url(#body-shadow)">
+              <path
+                d="M106 76c19-39 127-39 148 0 17 31 15 95-5 116-25 27-113 27-138 0-20-22-22-84-5-116z"
+                fill="url(#fur)"
+                stroke="#73aebe"
+                stroke-width="3"
+              />
+
+              <g id="ice-crown">
+                <path d="M153 49l10-27 17 20 17-23 11 31z" fill="url(#ice)" stroke="#69bcd7" stroke-width="2" />
+                <path d="M163 22l7 25M197 19l-9 29" stroke="#fff" stroke-width="2" opacity=".65" />
+              </g>
+
+              <g id="face">
+                <g class="eye left-eye">
+                  <ellipse cx="143" cy="126" rx="15" ry="20" fill="url(#eye)" />
+                  <circle cx="138" cy="119" r="5" fill="#fff" opacity=".92" />
+                  <circle cx="148" cy="135" r="3" fill="#baf8ff" opacity=".72" />
+                </g>
+                <g class="eye right-eye">
+                  <ellipse cx="217" cy="126" rx="15" ry="20" fill="url(#eye)" />
+                  <circle cx="212" cy="119" r="5" fill="#fff" opacity=".92" />
+                  <circle cx="222" cy="135" r="3" fill="#baf8ff" opacity=".72" />
+                </g>
+                <path
+                  id="mouth"
+                  d="M173 158q7 7 14 0"
+                  fill="none"
+                  stroke="#527d94"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                />
+                <ellipse class="blush left-blush" cx="125" cy="157" rx="13" ry="7" fill="#8ee4ef" opacity=".34" />
+                <ellipse class="blush right-blush" cx="235" cy="157" rx="13" ry="7" fill="#8ee4ef" opacity=".34" />
+              </g>
+            </g>
+          </g>
+        </svg>
+
+        <div id="particles" aria-hidden="true"></div>
+      </div>
+    </main>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>

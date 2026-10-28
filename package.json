@@ -1,0 +1,49 @@
+{
+  "name": "hatched-ice-pet",
+  "version": "1.0.0",
+  "description": "A tiny long-eared ice companion that lives on your desktop.",
+  "main": "desktop/main.cjs",
+  "author": "Siyi Wang",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/renderer.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^38.1.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "pet.hatched.icebunny",
+    "productName": "Hatched Ice Pet",
+    "asar": true,
+    "files": [
+      "desktop/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "mac": {
+      "category": "public.app-category.entertainment",
+      "extendInfo": {
+        "NSCalendarsUsageDescription": "Maodou reads your calendars so she can remind you when an event is starting.",
+        "NSCalendarsFullAccessUsageDescription": "Maodou reads your calendars so she can remind you when an event is starting."
+      },
+      "entitlements": "desktop/entitlements.mac.plist",
+      "entitlementsInherit": "desktop/entitlements.mac.plist",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    }
+  }
+}

@@ -11,5 +11,8 @@ pip-wheel-metadata
 *.egg-info
 /build
 /dist
+/node_modules
+/release
+/.electron-cache
 
 /my_work

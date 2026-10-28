@@ -1,0 +1,525 @@
+:root {
+  color-scheme: light;
+  font-family:
+    Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+}
+
+button {
+  font: inherit;
+  -webkit-app-region: no-drag;
+}
+
+/* The stage is taller than the pet so the hover launcher has transparent
+   headroom above Maodou instead of covering her face. */
+#app {
+  position: relative;
+  width: 360px;
+  height: 800px;
+  overflow: hidden;
+  pointer-events: none;
+  transform: scale(0.3125);
+  transform-origin: top left;
+}
+
+/* Sized in the unscaled 360px stage space, so the labels stay legible once
+   #app is scaled down to the small overlay window. */
+#app-launcher {
+  position: absolute;
+  z-index: 30;
+  top: 8px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 3px solid rgb(255 255 255 / 80%);
+  border-radius: 34px;
+  background: rgb(238 251 255 / 94%);
+  box-shadow: 0 12px 28px rgb(35 82 111 / 28%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-8px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+  backdrop-filter: blur(14px);
+}
+
+#app-launcher.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+#app-launcher button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border: 0;
+  border-radius: 22px;
+  color: #35607a;
+  background: transparent;
+  cursor: pointer;
+  font-size: 32px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#app-launcher hr {
+  width: 100%;
+  height: 2px;
+  margin: 4px 0;
+  border: 0;
+  background: rgb(74 168 199 / 28%);
+}
+
+#app-launcher button:hover {
+  color: #22485d;
+  background: #d3f1f9;
+}
+
+#speech-bubble {
+  position: absolute;
+  z-index: 15;
+  top: 438px;
+  left: 50%;
+  max-width: 330px;
+  padding: 16px 26px;
+  border: 3px solid #c6eaf3;
+  border-radius: 30px;
+  color: #42667a;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 8px 22px rgb(33 91 119 / 18%);
+  font-size: 28px;
+  font-weight: 650;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 8px) scale(0.95);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+#speech-bubble::after {
+  position: absolute;
+  bottom: -13px;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  border-right: 3px solid #c6eaf3;
+  border-bottom: 3px solid #c6eaf3;
+  background: rgb(255 255 255 / 94%);
+  content: "";
+  transform: translateX(-50%) rotate(45deg);
+}
+
+#speech-bubble.visible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+#pet-stage {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 360px;
+  height: 340px;
+  pointer-events: none;
+}
+
+#pet-art {
+  display: none;
+}
+
+#bunny-wrapper,
+#bunny-image {
+  position: absolute;
+  inset: 0;
+  width: 360px;
+  height: 340px;
+}
+
+#bunny-wrapper {
+  filter: drop-shadow(0 10px 8px rgb(39 75 99 / 24%));
+  pointer-events: none;
+  transform-origin: center;
+}
+
+#bunny-image {
+  cursor: grab;
+  pointer-events: auto;
+  transform-origin: center bottom;
+  animation: breathe 3.4s ease-in-out infinite;
+}
+
+#bunny-image:active {
+  cursor: grabbing;
+}
+
+#pet-stage.facing-left #bunny-wrapper {
+  transform: scaleX(-1);
+}
+
+#bunny {
+  cursor: grab;
+  pointer-events: visiblePainted;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: breathe 3.4s ease-in-out infinite;
+}
+
+#bunny:active {
+  cursor: grabbing;
+}
+
+.ear,
+#left-arm,
+#right-arm,
+#left-foot,
+#right-foot,
+#tail,
+.eye {
+  transform-box: fill-box;
+}
+
+#left-ear {
+  transform-origin: 83% 14%;
+  animation: left-ear-idle 4.2s ease-in-out infinite;
+}
+
+#right-ear {
+  transform-origin: 17% 14%;
+  animation: right-ear-idle 4.2s ease-in-out infinite;
+}
+
+#tail {
+  transform-origin: center;
+  animation: tail-twinkle 2.8s ease-in-out infinite;
+}
+
+.eye {
+  transform-origin: center;
+  animation: blink 5.2s infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-3px) scaleY(1.012);
+  }
+}
+
+@keyframes left-ear-idle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+@keyframes right-ear-idle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-2.5deg);
+  }
+}
+
+@keyframes tail-twinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0);
+  }
+  50% {
+    transform: scale(1.08) rotate(6deg);
+  }
+}
+
+@keyframes blink {
+  0%,
+  45%,
+  49%,
+  100% {
+    transform: scaleY(1);
+  }
+  47% {
+    transform: scaleY(0.08);
+  }
+}
+
+#app[data-state="walk"] #bunny {
+  animation: walk-hop 430ms ease-in-out infinite;
+}
+
+#app[data-state="walk"] #bunny-image,
+#app[data-state="run"] #bunny-image,
+#app[data-state="hop"] #bunny-image {
+  animation: none;
+}
+
+#app[data-state="walk"] #left-foot {
+  transform-origin: top center;
+  animation: foot-step 430ms ease-in-out infinite alternate;
+}
+
+#app[data-state="walk"] #right-foot {
+  transform-origin: top center;
+  animation: foot-step 430ms ease-in-out infinite alternate-reverse;
+}
+
+@keyframes walk-hop {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(1deg);
+  }
+}
+
+@keyframes foot-step {
+  to {
+    transform: rotate(14deg) translateY(-3px);
+  }
+}
+
+#app[data-state="happy"] #bunny {
+  animation: happy-hop 520ms cubic-bezier(0.2, 0.9, 0.35, 1.2) 3;
+}
+
+#app[data-state="happy"] #bunny-image {
+  animation: happy-hop 520ms cubic-bezier(0.2, 0.9, 0.35, 1.2) 3;
+}
+
+#app[data-state="happy"] #left-arm {
+  transform-origin: right center;
+  animation: left-wave 260ms ease-in-out 6 alternate;
+}
+
+#app[data-state="happy"] #right-arm {
+  transform-origin: left center;
+  animation: right-wave 260ms ease-in-out 6 alternate;
+}
+
+@keyframes happy-hop {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  45% {
+    transform: translateY(-23px) scale(1.03, 0.98);
+  }
+}
+
+@keyframes left-wave {
+  to {
+    transform: rotate(24deg) translate(-2px, -5px);
+  }
+}
+
+@keyframes right-wave {
+  to {
+    transform: rotate(-24deg) translate(2px, -5px);
+  }
+}
+
+#app[data-state="munch"] #bunny {
+  animation: munch-bob 260ms ease-in-out 6 alternate;
+}
+
+#app[data-state="munch"] #bunny-image {
+  animation: munch-bob 260ms ease-in-out 6 alternate;
+}
+
+#app[data-state="munch"] #mouth {
+  animation: munch-mouth 260ms ease-in-out 6 alternate;
+}
+
+@keyframes munch-bob {
+  to {
+    transform: translateY(2px) scaleY(0.985);
+  }
+}
+
+@keyframes munch-mouth {
+  to {
+    d: path("M173 157q7 12 14 0");
+    stroke-width: 4px;
+  }
+}
+
+#app[data-state="sleep"] #bunny {
+  animation: sleep-breathe 4s ease-in-out infinite;
+}
+
+#app[data-state="sleep"] #bunny-image {
+  animation: sleep-breathe 4s ease-in-out infinite;
+  filter: brightness(0.96) saturate(0.85);
+}
+
+#app[data-state="sleep"] .eye {
+  animation: none;
+  transform: scaleY(0.09);
+}
+
+#app[data-state="sleep"] #mouth {
+  d: path("M176 162q4-4 8 0");
+}
+
+#app[data-state="sleep"] .ear {
+  animation-duration: 6s;
+}
+
+@keyframes sleep-breathe {
+  0%,
+  100% {
+    transform: translateY(2px) scaleY(0.99);
+  }
+  50% {
+    transform: translateY(5px) scaleY(0.975);
+  }
+}
+
+#sleep-symbols {
+  position: absolute;
+  z-index: 8;
+  top: 48px;
+  right: 54px;
+  display: none;
+  color: #7c91dd;
+  font-weight: 900;
+  pointer-events: none;
+}
+
+#app[data-state="sleep"] #sleep-symbols {
+  display: block;
+}
+
+#sleep-symbols i {
+  position: absolute;
+  font-style: normal;
+  opacity: 0;
+  animation: drift-z 2.7s ease-out infinite;
+}
+
+#sleep-symbols i:nth-child(2) {
+  margin: -15px 0 0 15px;
+  font-size: 20px;
+  animation-delay: 0.8s;
+}
+
+#sleep-symbols i:nth-child(3) {
+  margin: -29px 0 0 2px;
+  font-size: 12px;
+  animation-delay: 1.6s;
+}
+
+@keyframes drift-z {
+  0% {
+    opacity: 0;
+    transform: translate(0, 8px) scale(0.7);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(14px, -25px) scale(1.1);
+  }
+}
+
+#app[data-state="sad"] #bunny {
+  animation: sad-sway 3s ease-in-out infinite;
+}
+
+#app[data-state="sad"] #bunny-image {
+  animation: sad-sway 3s ease-in-out infinite;
+  filter: saturate(0.72);
+}
+
+#app[data-state="sad"] #left-ear {
+  transform: rotate(-7deg);
+}
+
+#app[data-state="sad"] #right-ear {
+  transform: rotate(7deg);
+}
+
+#app[data-state="sad"] #mouth {
+  d: path("M174 164q6-7 12 0");
+}
+
+@keyframes sad-sway {
+  0%,
+  100% {
+    transform: translateY(4px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(5px) rotate(1deg);
+  }
+}
+
+#particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  z-index: 12;
+  left: 50%;
+  top: 53%;
+  color: #78dcef;
+  font-size: 20px;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgb(57 111 149 / 18%);
+  animation: particle-pop 1.2s ease-out forwards;
+}
+
+@keyframes particle-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.5) rotate(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(1.15) rotate(var(--r));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
